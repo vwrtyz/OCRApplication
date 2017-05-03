@@ -134,6 +134,130 @@ public class Main{
 		return flagCocok;
 	}
 	
+	public boolean cekVokalKiri(ArrayList<Integer> left, int topCount,int batas)
+	{
+		ArrayList<Integer> numb = new ArrayList<>();
+		for (int i = 0; i < left.size(); i++) 
+		{
+			if(left.get(i) < batas)
+			{
+				numb.add(i);
+			}
+		}
+		
+		int temporary = numb.get(0);
+		int selisih = 1, top=1;
+		for (int i = 1; i < numb.size(); i++) 
+		{
+			if((numb.get(i) - temporary) == selisih)
+			{
+				selisih++;
+			}
+			else
+			{
+				temporary = numb.get(i);
+				selisih = 1;
+				top++;
+			}
+		}
+		
+		if(top != topCount) return false;
+		return true;
+	}
+	
+	public boolean cekVokalKanan(ArrayList<Integer> right, int topCount,int batas)
+	{
+		ArrayList<Integer> numb = new ArrayList<>();
+		for (int i = 0; i < right.size(); i++) 
+		{
+			if(right.get(i) < batas)
+			{
+				numb.add(i);
+			}
+		}
+		
+		int temporary = numb.get(0);
+		int selisih = 1, top=1;
+		for (int i = 1; i < numb.size(); i++) 
+		{
+			if((numb.get(i) - temporary) == selisih)
+			{
+				selisih++;
+			}
+			else
+			{
+				temporary = numb.get(i);
+				selisih = 1;
+				top++;
+			}
+		}
+		
+		if(top != topCount) return false;
+		return true;
+	}
+	
+	public boolean cekVokalAtas(ArrayList<Integer> upper, int topCount,int batas)
+	{
+		ArrayList<Integer> numb = new ArrayList<>();
+		for (int i = 0; i < upper.size(); i++) 
+		{
+			if(upper.get(i) < batas)
+			{
+				numb.add(i);
+			}
+		}
+		
+		int temporary = numb.get(0);
+		int selisih = 1, top=1;
+		for (int i = 1; i < numb.size(); i++) 
+		{
+			if((numb.get(i) - temporary) == selisih)
+			{
+				selisih++;
+			}
+			else
+			{
+				temporary = numb.get(i);
+				selisih = 1;
+				top++;
+			}
+		}
+		
+		if(top != topCount) return false;
+		return true;
+	}
+	
+	public boolean cekVokalBawah(ArrayList<Integer> lower, int topCount,int batas)
+	{
+		ArrayList<Integer> numb = new ArrayList<>();
+		for (int i = 0; i < lower.size(); i++) 
+		{
+			if(lower.get(i) < batas)
+			{
+				numb.add(i);
+			}
+		}
+		
+		int temporary = numb.get(0);
+		int selisih = 1, top=1;
+		for (int i = 1; i < numb.size(); i++) 
+		{
+			if((numb.get(i) - temporary) == selisih)
+			{
+				selisih++;
+			}
+			else
+			{
+				temporary = numb.get(i);
+				selisih = 1;
+				top++;
+			}
+		}
+		
+		if(top != topCount) return false;
+		return true;
+	}
+	
 	public Main()
 	{
 		query = "select sisi_kiri,sisi_bawah,sisi_kanan,sisi_atas from konsonan";
@@ -198,8 +322,8 @@ public class Main{
 			e1.printStackTrace();
 		}
 		
-		for (int ulang = 1; ulang <= 100; ulang++) 
-		{
+//		for (int ulang = 1; ulang <= 100; ulang++) 
+//		{
 			keys=1;
 			letter = new HashMap<>();
 			potongHorizontal = new ArrayList<Integer>();
@@ -228,8 +352,8 @@ public class Main{
 		
 		try {
 //	           img = ImageIO.read(new File("D:/Photos/OCR/gabung2.jpg"));
-//			img = ImageIO.read(new File("D:/Photos/OCR/Testing/training/23.png"));
-			img = ImageIO.read(new File("D:/Photos/OCR/Testing/training/"+ulang+".png"));
+			img = ImageIO.read(new File("D:/Photos/OCR/Testing/training/99.png"));
+//			img = ImageIO.read(new File("D:/Photos/OCR/Testing/training/"+ulang+".png"));
 //			img = ImageIO.read(new File("C:/Photos/prata/Documents/Training/"".png"));
 			} catch (IOException e) {
 				System.out.println("error opening image");
@@ -422,8 +546,8 @@ public class Main{
 						}
 						batas-=1;
 						match = cekPattern(scanData, batas, 0, temporaryImage.getHeight());
-//						System.out.println(tempPattern);
-						if(match == 1)
+//						System.out.println(j+":"+tempPattern);
+						if(match == 1 && batas != temporaryImage.getWidth())
 						{
 //							cocok kanan
 //							System.out.println("cocok kanan");
@@ -498,7 +622,7 @@ public class Main{
 							}
 							match = cekPattern(scanData, batas, 0, temporaryImage.getWidth());
 
-							if(match == 1)
+							if(match == 1 && batas != temporaryImage.getHeight())
 							{
 //								cocok atas
 								
@@ -650,10 +774,35 @@ public class Main{
 								finalEucdDist.add(ecd.calculateEuclidianDistance(w, trainingDataVokal.get(k+1).get(0)) + ecd.calculateEuclidianDistance(x, trainingDataVokal.get(k+1).get(1)) + ecd.calculateEuclidianDistance(y, trainingDataVokal.get(k+1).get(2)) + ecd.calculateEuclidianDistance(z, trainingDataVokal.get(k+1).get(3)));
 							}
 							match = finalEucdDist.indexOf(Collections.min(finalEucdDist)) + 1;
-//							if(i==1) 
-//								for (int itungaja = 0; itungaja < finalEucdDist.size(); itungaja++) {
-//									System.out.println(finalEucdDist.get(itungaja));
-//								}
+							
+							if(match == 1)
+							{
+								if(!cekVokalKiri(w, 2, inputImage.getWidth()/2))
+								{
+									match = 3;
+								}
+							}
+							else if(match == 3)
+							{
+								if(!cekVokalKiri(w, 1, inputImage.getWidth()/2))
+								{
+									match = 1;
+								}
+							}
+							else if(match == 2)
+							{
+								if(!cekVokalKanan(y, 2, inputImage.getWidth()/2))
+								{
+									match = 4;
+								}
+							}
+							else if(match == 4)
+							{
+								if(!cekVokalKanan(y, 1, inputImage.getWidth()/2))
+								{
+									match = 2;
+								}
+							}
 						}
 						else if(inputImage.getWidth() > inputImage.getHeight())
 						{
@@ -661,7 +810,35 @@ public class Main{
 								finalEucdDist.add(ecd.calculateEuclidianDistance(w, trainingDataVokal.get(k+1).get(0)) + ecd.calculateEuclidianDistance(x, trainingDataVokal.get(k+1).get(1)) + ecd.calculateEuclidianDistance(y, trainingDataVokal.get(k+1).get(2)) + ecd.calculateEuclidianDistance(z, trainingDataVokal.get(k+1).get(3)));
 							}	
 							match = finalEucdDist.indexOf(Collections.min(finalEucdDist)) + 6;
-//							if(i==1) System.out.println(finalEucdDist);
+							
+							if(match == 6)
+							{
+								if(!cekVokalAtas(z, 2, inputImage.getHeight()/2))
+								{
+									match = 7;
+								}
+							}
+							else if(match == 7)
+							{
+								if(!cekVokalKiri(z, 1, inputImage.getHeight()/2))
+								{
+									match = 6;
+								}
+							}
+							else if(match == 8)
+							{
+								if(!cekVokalKanan(x, 2, inputImage.getHeight()/2))
+								{
+									match = 9;
+								}
+							}
+							else if(match == 9)
+							{
+								if(!cekVokalKanan(x, 1, inputImage.getHeight()/2))
+								{
+									match = 8;
+								}
+							}
 						}
 						tabel = "vokal";
 					}
@@ -803,7 +980,7 @@ public class Main{
 			}
 			//end-first
 			
-//			System.out.println(query);
+			System.out.println(query);
 			
 			if(!"".equals(query))
 			{
@@ -833,9 +1010,9 @@ public class Main{
 				}
 			}
 		}
-//		System.out.println(hasilAkhir);
-		System.out.println(ulang+","+hasilAkhir);
-		}
+		System.out.println(hasilAkhir);
+//		System.out.println(ulang+","+hasilAkhir);
+//		}
 	}
 	
 	public static void main(String[] args) {
